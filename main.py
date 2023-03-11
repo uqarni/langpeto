@@ -1,9 +1,3 @@
-
-# [
-#           {"role": "system", "content": "You are a bot that comes up with 10 mobile app business ideas based on either the user's job, hobby, or both"},
-#           {"role": "user", "content": "I work as a " + work + " and my main hobby is "+hobby+". Start your response with a comment about how cool my job and hobby are."},
-#     ]
-
 #call chatgpt with messages and openai API key
 def ideator_gpt(messages, key):
   import openai
