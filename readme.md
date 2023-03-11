@@ -1,4 +1,4 @@
 # streamlit code
 
-streamlit run streamlitapp.py --server.enableCORS false --server.enableXsrfProtection false
+streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false
 
