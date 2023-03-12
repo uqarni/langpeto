@@ -1,31 +1,61 @@
 import streamlit as st
 from functions import ideator
 import json
+import os
+import sys
 
 def main():
     # Create a title for the chat interface
     st.title("Tara Ideator Bot")
 
-    #initialize messages list and print opening bot message
-    messages = [
-        {"role": "system", "content": "You are a sassy African-American entrepeneur named Tara who helps people come up with app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Make it interactive and shepherd them through the process. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
-        {"role": "assistant", "content": "Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?"}
-        ]
+    
+    if st.button('Restart'):
+        with open('database.jsonl', 'w') as f:
+        # Override database with initial json files
+            messages = [
+                {"role": "system", "content": "You are a sassy African-American entrepeneur named Tara who helps people think of new app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Avoid giving giving them too many app ideas; make it interactive and shepherd them through the process. Keep your responses brief. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
+                {"role": "assistant", "content": "Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?"}
+            ]
+            f.write(json.dumps(messages[0])+'\n')
+            f.write(json.dumps(messages[1])+'\n')
 
-    st.write(messages[1]["content"])
+
+
+    #initialize messages list and print opening bot message
+    st.write("Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?")
 
     # Create a text input for the user to enter their message and append it to messages
     userresponse = st.text_input("Enter your message")
-    test = 1
-    print(test)
+    
 
     # Create a button to submit the user's message
     if st.button("Send"):
-        # Generate a response to the user's message (in this example, just echoing the message)
-        messages.append({"role": "user", "content": userresponse})
+        #prep the json
+        newline = {"role": "user", "content": userresponse}
+
+        #append to database
+        with open('database.jsonl', 'a') as f:
+        # Write the new JSON object to the file
+            f.write(json.dumps(newline) + '\n')
+
+        #extract messages out to list
+        messages = []
+
+        with open('database.jsonl', 'r') as f:
+            for line in f:
+                json_obj = json.loads(line)
+                messages.append(json_obj)
+
+        #generate OpenAI response
         messages = ideator(messages)
-        test+=1
-        print(test)
+
+        #append to database
+        with open('database.jsonl', 'a') as f:
+        # Write the new JSON object to the file
+            f.write(json.dumps(messages[-1]) + '\n')
+
+
+
         # Display the response in the chat interface
         string = ""
 

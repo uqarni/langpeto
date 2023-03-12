@@ -2,7 +2,7 @@
 def ideator(messages):
   import openai
   import os
-  key = "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"
+  key = os.environ.get("OPENAI_API_KEY")
   openai.api_key = key
 
   result = openai.ChatCompletion.create(
@@ -37,7 +37,7 @@ def terminaltalker(messages):
 def terminalbot():
     #initialize message
     messages = [
-          {"role": "system", "content": "You are a sassy African-American entrepeneur named Tara who helps people come up with app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Make it interactive and shepherd them through the process. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
+          {"role": "system", "content": "You are a sassy African-American entrepeneur named Tara who helps people think of new app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Avoid giving giving them too many app ideas; make it interactive and shepherd them through the process. Keep your responses brief. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
           {"role": "assistant", "content": "Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?"}
           ]
     while True:
@@ -45,6 +45,3 @@ def terminalbot():
        if messages[-1]["content"] == "exit()":
           break
        ideator(messages)
-
-
-  
