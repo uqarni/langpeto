@@ -3,17 +3,28 @@ from functions import ideator
 import json
 import os
 import sys
+from datetime import datetime
 
 def main():
     # Create a title for the chat interface
     st.title("Tara Ideator Bot")
-
+    st.write("This bot is still in alpha. To get started, first click the button below.")
     
-    if st.button('Restart'):
+    if st.button('Click to Start or Restart'):
+        st.write("Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?")
+        restart_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        with open('database.jsonl', 'r') as db, open('archive.jsonl','a') as arch:
+        # add reset 
+            arch.write(json.dumps({"restart": restart_time}) + '\n')
+        #copy each line from db to archive
+            for line in db:
+                arch.write(line)
+
+        #clear database to only first two lines
         with open('database.jsonl', 'w') as f:
         # Override database with initial json files
             messages = [
-                {"role": "system", "content": "You are a sassy African-American entrepeneur named Tara who helps people think of new app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Avoid giving giving them too many app ideas; make it interactive and shepherd them through the process. Keep your responses brief. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
+                {"role": "system", "content": "You are a quick-witted entrepeneur named Tara who helps people think of new app ideas based on their business or hobby. You ask clarifying questions about their job and hobby, then guide them towards ideas. Avoid giving giving them too many app ideas; make it interactive and shepherd them through the process. Keep your responses brief. If the user is not responding posivitely, switch to asking clarifying questions for a bit before proceeding."},
                 {"role": "assistant", "content": "Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?"}
             ]
             f.write(json.dumps(messages[0])+'\n')
@@ -22,7 +33,7 @@ def main():
 
 
     #initialize messages list and print opening bot message
-    st.write("Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?")
+    #st.write("Hi! This is Tara. Seems like you need help coming up with an idea! Let's do this. First, what's your job?")
 
     # Create a text input for the user to enter their message and append it to messages
     userresponse = st.text_input("Enter your message")
