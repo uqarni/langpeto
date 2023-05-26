@@ -7,26 +7,27 @@ def ideator(messages):
   openai.api_key = key
 
   result = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
+    model="gpt-4",
     messages= messages
   )
   response = result["choices"][0]["message"]["content"]
   
   def split_sms(message):
     # Use regular expressions to split the string at ., !, or ? followed by a space or newline
-    messages = re.split('(?<=[.!?]) (?=\\S)|(?<=[.!?])\n', message.strip())
+    split_messages = re.split('(?<=[.!?]) (?=\\S)|(?<=[.!?])\n', message.strip())
     # Strip leading and trailing whitespace from each message
-    return [msg.strip() for msg in messages if msg.strip()]
+    return [msg.strip() for msg in split_messages if msg.strip()]
   
   split_response = split_sms(response)
-  for response in split_response:
-    response = {
+  count = len(split_response)
+  for section in split_response:
+    section = {
       "role": "assistant", 
-      "content": response
+      "content": section
     }
-    messages.append(response)
+    messages.append(section)
 
-  return messages
+  return messages, count
 
 
 #prompt user with botresponse in terminal and ask for an input. returns messages with human response
