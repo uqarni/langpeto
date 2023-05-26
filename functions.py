@@ -2,6 +2,7 @@
 def ideator(messages):
   import openai
   import os
+  import re
   key = os.environ.get("OPENAI_API_KEY")
   openai.api_key = key
 
@@ -10,11 +11,20 @@ def ideator(messages):
     messages= messages
   )
   response = result["choices"][0]["message"]["content"]
-  response = {
-    "role": "assistant", 
-    "content": response
-  }
-  messages.append(response)
+  
+  def split_sms(message):
+    # Use regular expressions to split the string at ., !, or ? followed by a space or newline
+    messages = re.split('(?<=[.!?]) (?=\\S)|(?<=[.!?])\n', message.strip())
+    # Strip leading and trailing whitespace from each message
+    return [msg.strip() for msg in messages if msg.strip()]
+  
+  split_response = split_sms(response)
+  for response in split_response:
+    response = {
+      "role": "assistant", 
+      "content": response
+    }
+    messages.append(response)
 
   return messages
 
