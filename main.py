@@ -67,12 +67,12 @@ def main():
                 messages.append(json_obj)
 
         #generate OpenAI response
-        messages = ideator(messages)
+        messages, count = ideator(messages)
 
         #append to database
         with open('database.jsonl', 'a') as f:
-        # Write the new JSON object to the file
-            f.write(json.dumps(messages[-1]) + '\n')
+                for i in range(count):
+                    f.write(json.dumps(messages[-count + i]) + '\n')
 
 
 
