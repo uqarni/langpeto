@@ -13,10 +13,29 @@ def ideator(messages):
   response = result["choices"][0]["message"]["content"]
   
   def split_sms(message):
-    # Use regular expressions to split the string at ., !, or ? followed by a space or newline
-    split_messages = re.split('(?<=[.!?]) (?=\\S)|(?<=[.!?])\n', message.strip())
-    # Strip leading and trailing whitespace from each message
-    return [msg.strip() for msg in split_messages if msg.strip()]
+      # Use regular expressions to split the string at ., !, or ? followed by a space or newline
+      sentences = re.split('(?<=[.!?]) (?=\\S)|(?<=[.!?])\n', message.strip())
+      # Strip leading and trailing whitespace from each sentence
+      sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+
+      # Compute the total length of all sentences
+      total_length = sum(len(sentence) for sentence in sentences)
+
+      # Split the sentences into two parts such that the difference in their total lengths is minimized
+      part1 = []
+      part2 = []
+      part1_length = 0
+      for sentence in sentences:
+          if part1_length + len(sentence) <= total_length / 2:
+              part1.append(sentence)
+              part1_length += len(sentence)
+          else:
+              part2.append(sentence)
+
+      # Join the sentences in each part back into strings
+      strings = [" ".join(part1), " ".join(part2)]
+
+      return strings
   
   split_response = split_sms(response)
   count = len(split_response)
