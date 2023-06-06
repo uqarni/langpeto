@@ -21,7 +21,7 @@ def main():
     st.write("This bot is still in alpha. To test, first click the button below.")
     
     if st.button('Click to Start or Restart'):
-        st.write("Hey [NAME], It's just Pat with Cole Gordon's team. Saw you responded to an ad about possibly getting into remote, high ticket sales, and I wanted to check in to see if I might be able to help. Got 5 mins for a chat today?
+        st.write("Hey [NAME], It's just Pat with Cole Gordon's team. Saw you responded to an ad about possibly getting into remote, high ticket sales, and I wanted to check in to see if I might be able to help. Got 5 mins for a chat today?")
         restart_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         with open('database.jsonl', 'r') as db, open('archive.jsonl','a') as arch:
         # add reset 
