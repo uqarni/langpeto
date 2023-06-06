@@ -76,7 +76,7 @@ def terminalbot():
     #initialize message
     messages = [
           {"role": "system", "content": system_prompt},
-          {"role": "assistant", "content": "Hey [NAME] - Pat here from Cole Gordon's Remote Closing Academy. I saw you were potentially considering getting into remote closing. Are you still looking into doing that? Let me know, I might have a few resources I can send over or help point you in the right direction. If you don't want me to text you, just reply 'stop' and I'll cease all communication moving forward :)"}          ]
+          {"role": "assistant", "content": "Hey [NAME], It's just Pat with Cole Gordon's team. Saw you responded to an ad about possibly getting into remote, high ticket sales, and I wanted to check in to see if I might be able to help. Got 5 mins for a chat today?"}          ]
     while True:
        messages = terminaltalker(messages)
        if messages[-1]["content"] == "exit()":
